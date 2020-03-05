@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Serilog.AspNetCore" Version="3.2.0" />
+    <PackageReference Include="WebApiClient.JIT" Version="1.1.2" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\ManageServerClient.Api.Shared\ManageServerClient.Api.Shared.csproj" />
+    <ProjectReference Include="..\ManageServerClient.Shared\ManageServerClient.Shared.csproj" />
+    <ProjectReference Include="..\ManageServerClient.Web.Razor\ManageServerClient.Web.Razor.csproj" />
+  </ItemGroup>
+
+</Project>
