@@ -11,7 +11,13 @@ namespace ManageServerClient
     /// </summary>
     public class ResponseBase
     {
-        public int errcode { get; set; }
+        /// <summary>
+        /// 错误码，0.成功；非0.错误码
+        /// </summary>
+        public int errcode { get; set; } = 0;
+        /// <summary>
+        /// 错误信息
+        /// </summary>
         public string errinfo { get; set; }
 
     }

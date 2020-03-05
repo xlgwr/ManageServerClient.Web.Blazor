@@ -43,9 +43,12 @@ namespace ManageServerClient.Web.Blazor
                 return HttpApi.Resolve<IServerApi>();
             });
 
+            services.AddSingleton<WeatherForecastService>();
+
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddSingleton<WeatherForecastService>();
+
+            services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -82,6 +85,7 @@ namespace ManageServerClient.Web.Blazor
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapDefaultControllerRoute();
                 endpoints.MapBlazorHub();
                 endpoints.MapFallbackToPage("/_Host");
             });

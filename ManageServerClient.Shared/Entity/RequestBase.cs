@@ -11,6 +11,11 @@ namespace ManageServerClient
     /// </summary>
     public class RequestBase
     {
-        public int reqid { get; set; }
+        public ServerEnum reqid { get; set; }
+        #region 4.1.3 激活/停止/删除服务节点
+
+        public SVR_OPER cmd { get; set; }
+        public string identity { get; set; }
+        #endregion
     }
 }

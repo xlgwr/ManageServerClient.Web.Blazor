@@ -6,8 +6,11 @@ using System.Threading.Tasks;
 
 namespace ManageServerClient
 {
-    public class RequestObject<T> : ResponseBase
+    public class RequestObject<T> : RequestBase
     {
-
+        /// <summary>
+        /// 数据实体
+        /// </summary>
+        public T databody { get; set; }
     }
 }

@@ -28,8 +28,33 @@ namespace ManageServerClient
         /// </summary>
         /// <param name="request">请求列表</param>
         /// <returns></returns>
-        [HttpGet("Home/TE_ALL_SVR_QRY/reqid")]
+        [HttpGet("ServiceNode/TE_ALL_SVR_QRY")] 
         ITask<ResponseObject<List<ServiceNodeInfo>>> TE_ALL_SVR_QRY(RequestBase request);
+
+        /// <summary>
+        /// 更新
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost("ServiceNode/TE_SVR_CFG_UPD")]
+        ITask<ResponseObject<ServiceNodeInfo>> TE_SVR_CFG_UPD(RequestObject<ServiceNodeInfo> request);
+
+        /// <summary>
+        /// 新增
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPut("ServiceNode/TE_SVR_ADD")]
+        ITask<ResponseObject<ServiceNodeInfo>> TE_SVR_ADD(RequestObject<ServiceNodeInfo> request);
+
+        /// <summary>
+        /// 删除
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPut("ServiceNode/TE_SVR_OPER")]
+        ITask<ResponseObject<ServiceNodeInfo>> TE_SVR_OPER(RequestBase request);
+
 
 
     }
