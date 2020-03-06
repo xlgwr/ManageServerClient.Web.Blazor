@@ -1,0 +1,45 @@
+﻿@page "/pNotifier"
+@inject NotifierService Notifier
+@implements IDisposable
+
+<div class="alert @_alertFlag alert-dismissible @_classShow" role="alert">
+    <button type="button" class="close" @onclick="onHide" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <p>Last update: @_lastNotification.key = @_lastNotification.value</p>
+</div>
+
+
+@code {
+    private (string key, int value) _lastNotification;
+    public string _classShow { get; set; } = "hidden";
+    /// <summary>
+    /// alert-success
+    /// alert-info
+    /// alert-warning
+    /// alert-warning
+    /// </summary>
+    public string _alertFlag { get; set; } = "alert-warning";
+
+    protected override void OnInitialized()
+    {
+        Notifier.Notify += OnNotify;
+    }
+    public void onHide(MouseEventArgs e)
+    {
+        _classShow = "hidden";
+    }
+    public async Task OnNotify(string key, int value, alertEnum alertFlag = alertEnum.info)
+    {
+        await InvokeAsync(() =>
+        {
+            _lastNotification = (key, value);
+            StateHasChanged();
+            _classShow = "show";
+            _alertFlag = alertFlag.GetDescription();
+        });
+    }
+
+    public void Dispose()
+    {
+        Notifier.Notify -= OnNotify;
+    }
+}

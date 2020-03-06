@@ -5,11 +5,11 @@ VisualStudioVersion = 16.0.29806.167
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ManageServerClient.Web.Blazor", "ManageServerClient.Web.Blazor\ManageServerClient.Web.Blazor.csproj", "{2FCBBC48-3D56-4BF4-A126-63979E2BEAB5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManageServerClient.Shared", "ManageServerClient.Shared\ManageServerClient.Shared.csproj", "{9912E5F2-2BD4-433A-B95A-F01C66554A05}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ManageServerClient.Shared", "ManageServerClient.Shared\ManageServerClient.Shared.csproj", "{9912E5F2-2BD4-433A-B95A-F01C66554A05}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManageServerClient.Web.Razor", "ManageServerClient.Web.Razor\ManageServerClient.Web.Razor.csproj", "{0A8FEACC-C6C0-400E-8315-016AF3826616}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ManageServerClient.Web.Razor", "ManageServerClient.Web.Razor\ManageServerClient.Web.Razor.csproj", "{0A8FEACC-C6C0-400E-8315-016AF3826616}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManageServerClient.Api.Shared", "ManageServerClient.Api.Shared\ManageServerClient.Api.Shared.csproj", "{F6D1195D-2B75-4A48-8F32-096F127FEB45}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ManageServerClient.Api.Shared", "ManageServerClient.Api.Shared\ManageServerClient.Api.Shared.csproj", "{F6D1195D-2B75-4A48-8F32-096F127FEB45}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

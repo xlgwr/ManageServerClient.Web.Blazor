@@ -26,8 +26,8 @@ namespace ManageServerClient.Web.Blazor.ApiController
                 result.databody = tmpList;
                 return result;
             }
-            result.errinfo = "请求服务号错误";
-            result.errcode = -1;
+            result.errinfo = "请求服务号错误:"+requestBase.toJsonStr();
+            result.errcode = -1;  
 
             return result;
         }
@@ -118,7 +118,7 @@ namespace ManageServerClient.Web.Blazor.ApiController
                 result.errinfo = requestBase.cmd.GetDescription() + "成功";
                 return result;
             }
-            result.errinfo = "请求服务号错误";
+            result.errinfo = "请求服务号错误:" + requestBase.toJsonStr();
             result.errcode = -1;
 
             return result;

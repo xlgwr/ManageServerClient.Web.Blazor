@@ -17,12 +17,14 @@ namespace ManageServerClient
         {
             //context.RequestMessage.Headers.Add("token", "token value from filter");
             //context.RequestMessage.Headers.Add("header", "header");
-            return Task.FromResult<object>(null);
+            // do something
+            return Task.CompletedTask;
         }
 
         public Task OnEndRequestAsync(ApiActionContext context)
         {
-            return Task.FromResult<object>(null);
+            // do something
+            return Task.CompletedTask;
         }
 
     }

@@ -1,0 +1,35 @@
+﻿@page "/serviceNodeInfoTR"
+
+<tr @key="currServiceNodeInfo.identity">
+    @*<td>@currServiceNodeInfo.identity</td>*@
+    <td>@currServiceNodeInfo.svrid</td>
+    <td>@currServiceNodeInfo.svrtype</td>
+    <td>@currServiceNodeInfo.ip</td>
+    <td>@currServiceNodeInfo.port</td>
+    <td>@currServiceNodeInfo.desc</td>
+    <td>
+        <button class="btn btn-primary" @onclick="onEdit">修改</button>
+        <button class="btn btn-danger" @onclick="onDel">删除</button>
+        <button class="btn btn-warning" @onclick="onLive">激活</button>
+    </td>
+</tr>
+@code {
+
+    [Parameter]
+    public PNotifier pNotifier { get; set; }
+    [Parameter]
+    public ServiceNodeInfo currServiceNodeInfo { get; set; }
+
+    public async Task onEdit(MouseEventArgs e)
+    {
+        await pNotifier.OnNotify("修改：", 1, alertEnum.warning);
+    }
+    public async Task onDel(MouseEventArgs e)
+    {
+        await pNotifier.OnNotify("删除：", 1, alertEnum.danger);
+    }
+    public async Task onLive(MouseEventArgs e)
+    {
+        await pNotifier.OnNotify("激活：", 1, alertEnum.warning);
+    }
+}

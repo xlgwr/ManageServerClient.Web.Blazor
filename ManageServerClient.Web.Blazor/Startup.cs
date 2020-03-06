@@ -12,6 +12,9 @@ using ManageServerClient.Web.Blazor.Data;
 using WebApiClient;
 using Serilog;
 using Serilog.Events;
+using ManageServerClient.Web.Blazor.Filters;
+using Microsoft.AspNetCore.Mvc;
+using ManageServerClient.Web.Blazor.Services;
 
 namespace ManageServerClient.Web.Blazor
 {
@@ -44,11 +47,17 @@ namespace ManageServerClient.Web.Blazor
             });
 
             services.AddSingleton<WeatherForecastService>();
+            services.AddSingleton<NotifierService>();
 
             services.AddRazorPages();
             services.AddServerSideBlazor();
 
-            services.AddMvc();
+            services.AddMvc(options =>
+            {
+                // 添加全局异常
+                options.Filters.Add<HttpResponseExceptionFilter>();
+
+            });//.SetCompatibilityVersion(CompatibilityVersion.Version_3_0); ;
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

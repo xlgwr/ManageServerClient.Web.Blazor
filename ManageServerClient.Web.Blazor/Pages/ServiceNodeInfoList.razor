@@ -1,0 +1,53 @@
+﻿@page "/serviceNodeInfoList"
+
+@inject ILogger<Index> _logger
+@inject IServerApi _serverApi
+
+<h1>
+    所有服务节点
+</h1>
+
+<p>监控客户端登陆后获取所有的被监控的服务器节点</p>
+<PNotifier @ref="pNotifier"/>
+
+@if (serviceNodeInfos == null)
+{
+    <p><em>加载中，请稍后...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                @*<th>服务标识</th>*@
+                <th>服务id</th>
+                <th>服务类型</th>
+                <th>服务ip</th>
+                <th>端口</th>
+                <th>描述</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var curr in serviceNodeInfos)
+            {
+                <ServiceNodeInfoTR @key="curr.identity" currServiceNodeInfo="curr" pNotifier="pNotifier" /> 
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    [Parameter]
+    public PNotifier pNotifier { get; set; }
+
+    [Parameter]
+    public List<ServiceNodeInfo> serviceNodeInfos { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var getResult = await _serverApi.TE_ALL_SVR_QRY(new RequestBase() { reqid = ServerEnum.TE_ALL_SVR_QRY });
+        serviceNodeInfos = getResult.databody;
+        
+    }
+}
