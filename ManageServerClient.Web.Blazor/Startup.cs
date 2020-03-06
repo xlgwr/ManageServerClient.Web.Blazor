@@ -15,6 +15,7 @@ using Serilog.Events;
 using ManageServerClient.Web.Blazor.Filters;
 using Microsoft.AspNetCore.Mvc;
 using ManageServerClient.Web.Blazor.Services;
+using AutoMapper;
 
 namespace ManageServerClient.Web.Blazor
 {
@@ -32,7 +33,7 @@ namespace ManageServerClient.Web.Blazor
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddLogging(loggingBuilder =>
-                    loggingBuilder.AddSerilog(dispose: true)); 
+                    loggingBuilder.AddSerilog(dispose: true));
 
             string getUrlHttp = Configuration.GetValue<string>("IServerApiURL");
             HttpApi.Register<IServerApi>().ConfigureHttpApiConfig(c =>
@@ -45,7 +46,15 @@ namespace ManageServerClient.Web.Blazor
             {
                 return HttpApi.Resolve<IServerApi>();
             });
+            //autoMap
+            var myAssembly = "ManageServerClient.Web.Blazor";
+            var configautoMap = new MapperConfiguration(cfg =>
+            {
+                cfg.AddMaps(myAssembly);
+            });
+            services.AddSingleton(configautoMap);
 
+            services.AddSingleton<AutoMapService>();
             services.AddSingleton<WeatherForecastService>();
             services.AddSingleton<NotifierService>();
 

@@ -9,9 +9,15 @@
     <td>@curr.port</td>
     <td>@curr.desc</td>
     <td>
-        <ModalDialogButton classBtn="btn btn-primary" DialogId="serviceNodeInfos" ButtonContent="修改" OnClickCallback="onEdit"></ModalDialogButton>
-        <ModalDialogButton classBtn="btn btn-danger" DialogId="serviceNodeInfos" ButtonContent="删除" OnClickCallback="onDel"></ModalDialogButton>
-        <ModalDialogButton classBtn="btn btn-warning" DialogId="serviceNodeInfos" ButtonContent="激活" OnClickCallback="onLive"></ModalDialogButton>
+        <ModalDialogButton classBtn="btn btn-info" DialogId="serviceNodeInfos" ButtonContent="修改" OnClickCallback="onEdit">
+            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+        </ModalDialogButton>
+        <ModalDialogButton classBtn="btn btn-danger" DialogId="serviceNodeInfos" ButtonContent="删除" OnClickCallback="onDel">
+            <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+        </ModalDialogButton>
+        <ModalDialogButton classBtn="btn btn-warning" DialogId="serviceNodeInfos" ButtonContent="激活" OnClickCallback="onLive">
+            <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+        </ModalDialogButton>
     </td>
 </tr>
 @code {

@@ -35,6 +35,7 @@
     public async Task OnClickCallback(MouseEventArgs e)
     {
         await _eventCallback.Invoke(e);
+         StateHasChanged();
     }
 
     public void ChangeDilog(string title, string buttonContent)

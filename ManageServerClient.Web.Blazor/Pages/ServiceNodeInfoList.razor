@@ -2,9 +2,13 @@
 
 @inject ILogger<Index> _logger
 @inject IServerApi _serverApi
+@inject AutoMapService autoMap
 
 <h1>
     所有服务节点
+    <ModalDialogButton classBtn="btn btn-primary" DialogId="pModalDialogAddId" ButtonContent="新增" OnClickCallback="onAdd">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+    </ModalDialogButton>
 </h1>
 
 <p>监控客户端登陆后获取所有的被监控的服务器节点</p>
@@ -31,12 +35,14 @@ else
         <tbody>
             @foreach (var item in serviceNodeInfos)
             {
-                <ServiceNodeInfoTR @key="curr.identity" curr="item" pNotifier="pNotifier" pModalDialog="pModalDialog"  parentTop="this" /> 
+                <ServiceNodeInfoTR @key="curr.identity" curr="item" pNotifier="pNotifier" pModalDialog="pModalDialog" parentTop="this" />
+
             }
         </tbody>
     </table>
 }
-<ServiceNodeInfoDialog @ref="pModalDialog" curr="curr"/>
+<ServiceNodeInfoDialog @ref="pModalDialog" curr="curr" />
+<ServiceNodeInfoDialog @ref="pModalDialogAdd" curr="currAdd" DialogId="pModalDialogAddId" />
 
 @code {
     [Parameter]
@@ -44,7 +50,11 @@ else
     [Parameter]
     public ServiceNodeInfo curr { get; set; } = new ServiceNodeInfo();
     [Parameter]
+    public ServiceNodeInfo currAdd { get; set; } = new ServiceNodeInfo();
+    [Parameter]
     public ServiceNodeInfoDialog pModalDialog { get; set; }
+    [Parameter]
+    public ServiceNodeInfoDialog pModalDialogAdd { get; set; }
 
     [Parameter]
     public List<ServiceNodeInfo> serviceNodeInfos { get; set; }
@@ -54,6 +64,12 @@ else
         var getResult = await _serverApi.TE_ALL_SVR_QRY(new RequestBase() { reqid = ServerEnum.TE_ALL_SVR_QRY });
         serviceNodeInfos = getResult.databody;
     }
+    public void Add(ServiceNodeInfo curr)
+    {
+        serviceNodeInfos.Add(curr);
+        currAdd = new ServiceNodeInfo();
+        StateHasChanged();
+    }
     public void Remove(ServiceNodeInfo curr)
     {
         serviceNodeInfos.Remove(curr);
@@ -62,10 +78,22 @@ else
     public void Change(ServiceNodeInfo curr)
     {
         var findcurr = serviceNodeInfos.Where(a => a.identity == curr.identity).FirstOrDefault();
-        if (findcurr!=null)
+        if (findcurr != null)
         {
             findcurr = curr;
-        } 
+        }
         StateHasChanged();
+    }
+    public void onAdd(MouseEventArgs e)
+    {
+        pModalDialogAdd.pModalDialog.ChangeDilog("新增", "新增");
+        Func<MouseEventArgs, Task> func = (e) =>
+        {
+            var newCurr = autoMap.GetDest<ServiceNodeInfo, ServiceNodeInfo>(currAdd);
+            newCurr.identity = Guid.NewGuid().ToString();
+            Add(newCurr);
+            return pNotifier.OnNotify("新增：", 0, alertEnum.warning);
+        };
+        pModalDialogAdd.pModalDialog.SetClickCallbackToDo(func);
     }
 }

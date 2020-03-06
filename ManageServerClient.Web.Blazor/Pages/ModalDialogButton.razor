@@ -1,7 +1,13 @@
 ﻿
-<button type="button" class="@classBtn" data-toggle="modal" data-target="#@DialogId" @onclick="OnClickCallback">@ButtonContent</button>
+<button type="button" class="@classBtn" data-toggle="modal" data-target="#@DialogId" @onclick="OnClickCallback">
+    @ChildContent
+    @ButtonContent
+</button>
 
 @code {
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
 
     [Parameter]
     public string classBtn { get; set; } = "btn btn-primary";

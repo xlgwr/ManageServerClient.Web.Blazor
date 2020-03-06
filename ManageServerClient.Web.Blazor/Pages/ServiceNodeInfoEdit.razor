@@ -2,27 +2,27 @@
 <form @key="curr.identity">
     <div class="form-group">
         <label for="identity">服务标识</label>
-        <input type="email" class="form-control" id="identity" placeholder="服务标识" @bind="curr.identity" readonly="readonly">
+        <input type="email" class="form-control" placeholder="服务标识" @bind="curr.identity" readonly="readonly">
     </div>
     <div class="form-group">
         <label for="identity">服务id</label>
-        <input type="email" class="form-control" id="svrid" placeholder="服务id" @bind="curr.svrid" readonly="@pdisabled">
+        <input type="email" class="form-control" placeholder="服务id" @bind="curr.svrid" readonly="@pdisabled">
     </div>
     <div class="form-group">
         <label for="identity">服务类型</label>
-        <input type="email" class="form-control" id="svrtype" placeholder="服务类型" @bind="curr.svrtype" readonly="@pdisabled">
+        <input type="email" class="form-control" placeholder="服务类型" @bind="curr.svrtype" readonly="@pdisabled">
     </div>
     <div class="form-group">
         <label for="identity">服务IP</label>
-        <input type="email" class="form-control" id="ip" placeholder="服务IP" @bind="curr.ip" readonly="@pdisabled">
+        <input type="email" class="form-control" placeholder="服务IP" @bind="curr.ip" readonly="@pdisabled">
     </div>
     <div class="form-group">
         <label for="identity">端口</label>
-        <input type="email" class="form-control" id="port" placeholder="端口" @bind="curr.port" readonly="@pdisabled">
+        <input type="email" class="form-control" placeholder="端口" @bind="curr.port" readonly="@pdisabled">
     </div>
     <div class="form-group">
         <label for="identity">描述</label>
-        <input type="email" class="form-control" id="desc" placeholder="描述" @bind="curr.desc" readonly="@pdisabled">
+        <input type="email" class="form-control" placeholder="描述" @bind="curr.desc" readonly="@pdisabled">
     </div>
 </form>
 
@@ -34,10 +34,10 @@
     [Parameter]
     public ServiceNodeInfo curr { get; set; }
 
-    public void Changecurr(ServiceNodeInfo getcurr,bool isEdit = false)
+    public void Changecurr(ServiceNodeInfo getcurr, bool isEdit = false)
     {
         this.pdisabled = !isEdit;
         this.curr = getcurr;
         StateHasChanged();
-    } 
+    }
 }
