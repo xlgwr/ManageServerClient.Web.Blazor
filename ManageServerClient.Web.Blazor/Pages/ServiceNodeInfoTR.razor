@@ -36,12 +36,12 @@
 
     public void onEdit(MouseEventArgs e)
     {
-        pModalDialog.Changecurr(curr,true);
+        pModalDialog.Changecurr(curr, true);
         pModalDialog.pModalDialog.ChangeDilog("修改", "修改");
         Func<MouseEventArgs, Task> func = (e) =>
-        { 
+        {
             parentTop.Change(curr);
-            return pNotifier.OnNotify("修改1：", 1, alertEnum.warning);
+            return pNotifier.OnNotify($"修改 ：{curr.toJsonStr()} 成功", 1, alertEnum.warning);
         };
         pModalDialog.pModalDialog.SetClickCallbackToDo(func);
     }
@@ -52,7 +52,7 @@
         Func<MouseEventArgs, Task> func = (e) =>
         {
             parentTop.Remove(curr);
-            return pNotifier.OnNotify("删除：", 2, alertEnum.danger);
+            return pNotifier.OnNotify($"删除 ：{curr.toJsonStr()} 成功", 2, alertEnum.danger);
         };
         pModalDialog.pModalDialog.SetClickCallbackToDo(func);
 
@@ -64,7 +64,7 @@
         pModalDialog.pModalDialog.ChangeDilog("激活", "激活");
         Func<MouseEventArgs, Task> func = (e) =>
         {
-            return pNotifier.OnNotify("激活：", 3, alertEnum.warning);
+            return pNotifier.OnNotify($"激活 ：{curr.toJsonStr()} 成功", 3, alertEnum.warning);
         };
         pModalDialog.pModalDialog.SetClickCallbackToDo(func);
     }

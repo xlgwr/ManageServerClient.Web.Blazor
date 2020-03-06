@@ -92,7 +92,7 @@ else
             var newCurr = autoMap.GetDest<ServiceNodeInfo, ServiceNodeInfo>(currAdd);
             newCurr.identity = Guid.NewGuid().ToString();
             Add(newCurr);
-            return pNotifier.OnNotify("新增：", 0, alertEnum.warning);
+            return pNotifier.OnNotify($"新增：{newCurr.toJsonStr()} 成功", 0, alertEnum.warning);
         };
         pModalDialogAdd.pModalDialog.SetClickCallbackToDo(func);
     }
