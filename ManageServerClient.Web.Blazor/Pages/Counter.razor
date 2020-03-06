@@ -1,18 +1,25 @@
-﻿@page "/counter" 
+﻿@page "/counter"
 @inject ILogger<Counter> _logger
+@inject NavigationManager NavigationManager
 
 <h1>Counter</h1>
 
 <p>Current count: @currentCount</p>
 
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<button class="btn btn-primary" @onclick="GoHome">Go Back Home</button>
 
 @code {
     private int currentCount = 0;
 
     private void IncrementCount()
     {
-        currentCount++; 
+        currentCount++;
         _logger.LogInformation($"{currentCount}");
     }
+    public void GoHome()
+    {
+        NavigationManager.NavigateTo("/");
+    }
+
 }

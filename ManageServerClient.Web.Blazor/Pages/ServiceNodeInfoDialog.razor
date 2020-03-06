@@ -1,0 +1,22 @@
+﻿<ModalDialog DialogId="@DialogId" @ref="pModalDialog">
+    <ServiceNodeInfoEdit @key="curr.identity" curr="curr" pdisabled="disabled" />
+</ModalDialog>
+
+
+@code {
+    [Parameter]
+    public bool disabled { get; set; } = false;
+    [Parameter]
+    public string DialogId { get; set; } = "serviceNodeInfos";
+    [Parameter]
+    public ServiceNodeInfo curr { get; set; } = new ServiceNodeInfo();
+    [Parameter]
+    public ModalDialog pModalDialog { get; set; }
+
+    public void Changecurr(ServiceNodeInfo getcurr, bool isEdit = false)
+    {
+        this.disabled = !isEdit;
+        this.curr = getcurr;
+        StateHasChanged();
+    }
+}

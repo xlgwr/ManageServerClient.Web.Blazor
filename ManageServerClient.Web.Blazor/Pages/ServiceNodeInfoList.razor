@@ -8,7 +8,7 @@
 </h1>
 
 <p>监控客户端登陆后获取所有的被监控的服务器节点</p>
-<PNotifier @ref="pNotifier"/>
+<PNotifier @ref="pNotifier" />
 
 @if (serviceNodeInfos == null)
 {
@@ -29,17 +29,22 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (var curr in serviceNodeInfos)
+            @foreach (var item in serviceNodeInfos)
             {
-                <ServiceNodeInfoTR @key="curr.identity" currServiceNodeInfo="curr" pNotifier="pNotifier" /> 
+                <ServiceNodeInfoTR @key="curr.identity" curr="item" pNotifier="pNotifier" pModalDialog="pModalDialog"  parentTop="this" /> 
             }
         </tbody>
     </table>
 }
+<ServiceNodeInfoDialog @ref="pModalDialog" curr="curr"/>
 
 @code {
     [Parameter]
     public PNotifier pNotifier { get; set; }
+    [Parameter]
+    public ServiceNodeInfo curr { get; set; } = new ServiceNodeInfo();
+    [Parameter]
+    public ServiceNodeInfoDialog pModalDialog { get; set; }
 
     [Parameter]
     public List<ServiceNodeInfo> serviceNodeInfos { get; set; }
@@ -48,6 +53,19 @@ else
     {
         var getResult = await _serverApi.TE_ALL_SVR_QRY(new RequestBase() { reqid = ServerEnum.TE_ALL_SVR_QRY });
         serviceNodeInfos = getResult.databody;
-        
+    }
+    public void Remove(ServiceNodeInfo curr)
+    {
+        serviceNodeInfos.Remove(curr);
+        StateHasChanged();
+    }
+    public void Change(ServiceNodeInfo curr)
+    {
+        var findcurr = serviceNodeInfos.Where(a => a.identity == curr.identity).FirstOrDefault();
+        if (findcurr!=null)
+        {
+            findcurr = curr;
+        } 
+        StateHasChanged();
     }
 }

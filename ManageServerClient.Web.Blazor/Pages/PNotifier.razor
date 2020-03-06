@@ -32,9 +32,9 @@
         await InvokeAsync(() =>
         {
             _lastNotification = (key, value);
-            StateHasChanged();
             _classShow = "show";
             _alertFlag = alertFlag.GetDescription();
+            StateHasChanged();
         });
     }
 

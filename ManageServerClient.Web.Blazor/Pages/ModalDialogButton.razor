@@ -1,0 +1,14 @@
+﻿
+<button type="button" class="@classBtn" data-toggle="modal" data-target="#@DialogId" @onclick="OnClickCallback">@ButtonContent</button>
+
+@code {
+
+    [Parameter]
+    public string classBtn { get; set; } = "btn btn-primary";
+    [Parameter]
+    public string DialogId { get; set; } = "LargeModal";
+    [Parameter]
+    public string ButtonContent { get; set; } = "Save changes ";
+    [Parameter]
+    public EventCallback<MouseEventArgs> OnClickCallback { get; set; }
+}

@@ -1,35 +1,65 @@
 ﻿@page "/serviceNodeInfoTR"
+@inject NavigationManager NavigationManager
 
-<tr @key="currServiceNodeInfo.identity">
-    @*<td>@currServiceNodeInfo.identity</td>*@
-    <td>@currServiceNodeInfo.svrid</td>
-    <td>@currServiceNodeInfo.svrtype</td>
-    <td>@currServiceNodeInfo.ip</td>
-    <td>@currServiceNodeInfo.port</td>
-    <td>@currServiceNodeInfo.desc</td>
+<tr @key="curr.identity">
+    @*<td>@curr.identity</td>*@
+    <td>@curr.svrid</td>
+    <td>@curr.svrtype</td>
+    <td>@curr.ip</td>
+    <td>@curr.port</td>
+    <td>@curr.desc</td>
     <td>
-        <button class="btn btn-primary" @onclick="onEdit">修改</button>
-        <button class="btn btn-danger" @onclick="onDel">删除</button>
-        <button class="btn btn-warning" @onclick="onLive">激活</button>
+        <ModalDialogButton classBtn="btn btn-primary" DialogId="serviceNodeInfos" ButtonContent="修改" OnClickCallback="onEdit"></ModalDialogButton>
+        <ModalDialogButton classBtn="btn btn-danger" DialogId="serviceNodeInfos" ButtonContent="删除" OnClickCallback="onDel"></ModalDialogButton>
+        <ModalDialogButton classBtn="btn btn-warning" DialogId="serviceNodeInfos" ButtonContent="激活" OnClickCallback="onLive"></ModalDialogButton>
     </td>
 </tr>
 @code {
 
     [Parameter]
-    public PNotifier pNotifier { get; set; }
-    [Parameter]
-    public ServiceNodeInfo currServiceNodeInfo { get; set; }
+    public ServiceNodeInfoList parentTop { get; set; }
 
-    public async Task onEdit(MouseEventArgs e)
+    [Parameter]
+    public PNotifier pNotifier { get; set; }
+
+    [Parameter]
+    public ServiceNodeInfoDialog pModalDialog { get; set; }
+
+    [Parameter]
+    public ServiceNodeInfo curr { get; set; }
+
+    public void onEdit(MouseEventArgs e)
     {
-        await pNotifier.OnNotify("修改：", 1, alertEnum.warning);
+        pModalDialog.Changecurr(curr,true);
+        pModalDialog.pModalDialog.ChangeDilog("修改", "修改");
+        Func<MouseEventArgs, Task> func = (e) =>
+        { 
+            parentTop.Change(curr);
+            return pNotifier.OnNotify("修改1：", 1, alertEnum.warning);
+        };
+        pModalDialog.pModalDialog.SetClickCallbackToDo(func);
     }
-    public async Task onDel(MouseEventArgs e)
+    public void onDel(MouseEventArgs e)
     {
-        await pNotifier.OnNotify("删除：", 1, alertEnum.danger);
+        pModalDialog.Changecurr(curr);
+        pModalDialog.pModalDialog.ChangeDilog("删除", "删除");
+        Func<MouseEventArgs, Task> func = (e) =>
+        {
+            parentTop.Remove(curr);
+            return pNotifier.OnNotify("删除：", 2, alertEnum.danger);
+        };
+        pModalDialog.pModalDialog.SetClickCallbackToDo(func);
+
+
     }
-    public async Task onLive(MouseEventArgs e)
+    public void onLive(MouseEventArgs e)
     {
-        await pNotifier.OnNotify("激活：", 1, alertEnum.warning);
+        pModalDialog.Changecurr(curr);
+        pModalDialog.pModalDialog.ChangeDilog("激活", "激活");
+        Func<MouseEventArgs, Task> func = (e) =>
+        {
+            return pNotifier.OnNotify("激活：", 3, alertEnum.warning);
+        };
+        pModalDialog.pModalDialog.SetClickCallbackToDo(func);
     }
 }

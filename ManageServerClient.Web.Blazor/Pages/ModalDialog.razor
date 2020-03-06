@@ -1,0 +1,50 @@
+﻿<!-- Large modal -->
+<div id="@DialogId" class="modal fade" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">@Title</h4>
+            </div>
+            <div class="modal-body">
+                @ChildContent
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">退出</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" @onclick="OnClickCallback">@ButtonContent</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+@code {
+
+    private Func<MouseEventArgs, Task> _eventCallback;
+
+    [Parameter]
+    public string Title { get; set; } = "Model Dialog Title";
+    [Parameter]
+    public string ButtonContent { get; set; } = "Save changes ";
+
+    [Parameter]
+    public string DialogId { get; set; } = "LargeModal";
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    public async Task OnClickCallback(MouseEventArgs e)
+    {
+        await _eventCallback.Invoke(e);
+    }
+
+    public void ChangeDilog(string title, string buttonContent)
+    {
+        this.Title = title;
+        this.ButtonContent = buttonContent;
+        StateHasChanged();
+    }
+    public void SetClickCallbackToDo(Func<MouseEventArgs, Task> eventCallback)
+    {
+        _eventCallback = eventCallback;
+    }
+}
