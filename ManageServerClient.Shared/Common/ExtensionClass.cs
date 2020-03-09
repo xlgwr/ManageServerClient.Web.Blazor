@@ -911,6 +911,28 @@ namespace ManageServerClient
             }
             return name;
         }
+        public static Dictionary<string, string> GetKeyDescFromDic(this Dictionary<string, string> dic, Dictionary<string, string> sources)
+        {
+            var result = new Dictionary<string, string>();
+            foreach (var item in dic)
+            {
+                var key = $"{item.Key}:{sources.GetValue(item.Key, "")}".Trim(':');
+                result.Add(key, item.Value);
+            }
+            return result;
+        }
+        public static IList<T> GetKeyDescFrom<T>(this IList<T> list, Dictionary<string, string> sources)
+            where T : ErrorInfo
+        {
+            int allCount = list.Count;
+            for (int i = 0; i < allCount; i++)
+            {
+                var item = list[i];
+                var key = $"{item.Name}:{sources.GetValue(item.Name, "")}".Trim(':');
+                item.Name = key;
+            }
+            return list;
+        }
     }
 
     public class ConstantSUtil

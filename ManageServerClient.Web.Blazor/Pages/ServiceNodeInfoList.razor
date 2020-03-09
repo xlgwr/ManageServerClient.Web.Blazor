@@ -61,10 +61,15 @@ else
 
     [Parameter]
     public List<ServiceNodeInfo> serviceNodeInfos { get; set; }
+    /// <summary>
+    /// 属性对应Description
+    /// </summary>
+    private Dictionary<string, string> serviceNodeInfoDic { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         await LoadData();
+        serviceNodeInfoDic = currAdd.GetDescriptionAll();
     }
     public async Task LoadData()
     {
@@ -102,7 +107,15 @@ else
         }
         if (result.errcode != 0)
         {
-            await pModalDialogAdd.pNotifier.OnNotify($"新增失败：{result.errinfo},{result.errbody.toJsonStr()},Data：{newCurr.toJsonStr()}", 1, alertEnum.danger);
+            var dicErr = new List<ErrorInfo>();
+
+            if (result.errbody is JArray)
+            {
+                JArray dd = result.errbody as JArray;
+                dicErr=dd.ToObject<List<ErrorInfo>>(); 
+            }
+
+            await pModalDialogAdd.pNotifier.OnNotify($"新增失败：{result.errinfo},{dicErr.GetKeyDescFrom(serviceNodeInfoDic).toJsonStr()},Data：{newCurr.toJsonStr()}", 1, alertEnum.danger);
             return;
         }
 
@@ -133,8 +146,15 @@ else
         }
         if (result.errcode != 0)
         {
-            var getDic = currItem.GetDescriptionAll();
-            await pModalDialogEdit.pNotifier.OnNotify($"{currTodo.GetDescription()}失败：{result.errinfo},{result.errbody.toJsonStr()},Data：{currItem.toJsonStr()}", 1, alertEnum.danger);
+            var dicErr = new List<ErrorInfo>();
+
+            if (result.errbody is JArray)
+            {
+                JArray dd = result.errbody as JArray;
+                dicErr=dd.ToObject<List<ErrorInfo>>(); 
+            }
+
+            await pModalDialogEdit.pNotifier.OnNotify($"{currTodo.GetDescription()}失败：{result.errinfo},{dicErr.GetKeyDescFrom(serviceNodeInfoDic).toJsonStr()},Data：{currItem.toJsonStr()}", 1, alertEnum.danger);
             return;
         }
 

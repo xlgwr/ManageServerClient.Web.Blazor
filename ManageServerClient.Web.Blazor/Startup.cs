@@ -84,10 +84,17 @@ namespace ManageServerClient.Web.Blazor
                             errmsgs.Add(item.Errors.First().ErrorMessage);
                         }
                         int allCount = 0;
-                        var ErrorDic = new Dictionary<string, string>();
+                        var ErrorDic = new List<ErrorInfo>();
                         foreach (var item in error.Keys)
                         {
-                            ErrorDic[item] = errmsgs[allCount];
+                            var itemSplit = item.Split('.');
+                            string key = item;
+                            if (itemSplit.Length > 1)
+                            {
+                                key = itemSplit[1];
+                            }
+                            ErrorDic.Add(new ErrorInfo() { Name = key, Message = errmsgs[allCount] });
+
                             allCount++;
                         }
                         var result = new ResponseObject<object>()

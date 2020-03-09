@@ -30,4 +30,9 @@ namespace ManageServerClient
         public int status { get; set; } = 200;
 
     }
+    public class ErrorInfo
+    {
+        public string Name { get; set; }
+        public string Message { get; set; }
+    }
 }
