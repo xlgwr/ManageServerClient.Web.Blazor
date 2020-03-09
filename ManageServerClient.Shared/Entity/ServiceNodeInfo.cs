@@ -19,16 +19,19 @@ namespace ManageServerClient
         /// 服务id
         /// </summary>
         [Description("服务id")]
+        [Required]
         public string svrid { get; set; }
         /// <summary>
         /// 服务类型
         /// </summary>
         [Description("服务类型")]
+        [Required]
         public int svrtype { get; set; }
         /// <summary>
         /// 服务ip
         /// </summary>
         [Description("服务ip")]
+        [Required]
         public string ip { get; set; }
         /// <summary>
         /// 端口
