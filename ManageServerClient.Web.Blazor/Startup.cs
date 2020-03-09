@@ -16,6 +16,7 @@ using ManageServerClient.Web.Blazor.Filters;
 using Microsoft.AspNetCore.Mvc;
 using ManageServerClient.Web.Blazor.Services;
 using AutoMapper;
+using Microsoft.Extensions.Logging;
 
 namespace ManageServerClient.Web.Blazor
 {
@@ -67,6 +68,48 @@ namespace ManageServerClient.Web.Blazor
                 options.Filters.Add<HttpResponseExceptionFilter>();
 
             });//.SetCompatibilityVersion(CompatibilityVersion.Version_3_0); ;
+
+            //禁用默认行为
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                //options.SuppressModelStateInvalidFilter = true;
+                options.InvalidModelStateResponseFactory = (context) =>
+                {
+                    var error = context.ModelState;
+                    try
+                    {
+                        var errmsgs = new List<string>();
+                        foreach (var item in error.Values)
+                        {
+                            errmsgs.Add(item.Errors.First().ErrorMessage);
+                        }
+                        int allCount = 0;
+                        var ErrorDic = new Dictionary<string, string>();
+                        foreach (var item in error.Keys)
+                        {
+                            ErrorDic[item] = errmsgs[allCount];
+                            allCount++;
+                        }
+                        var result = new ResponseObject<object>()
+                        {
+                            errcode = -1,
+                            errinfo = $"参数验证不通过",
+                            databody = ErrorDic
+                        };
+                        return new JsonResult(result);
+                    }
+                    catch (Exception)
+                    {
+                        var result = new ResponseObject<object>()
+                        {
+                            errcode = -1,
+                            errinfo = $"参数验证不通过",
+                            databody = error
+                        };
+                        return new JsonResult(result);
+                    }
+                };
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

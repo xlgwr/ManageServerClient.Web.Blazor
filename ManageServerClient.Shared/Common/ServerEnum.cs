@@ -21,7 +21,7 @@ namespace ManageServerClient
         /// <summary>
         /// 激活/停止/删除服务节点 http
         /// </summary>
-        TE_SVR_DEL = 70003,
+        TE_SVR_OPER = 70003,
         /// <summary>
         /// 同步服务节点 socket
         /// </summary>
@@ -46,6 +46,7 @@ namespace ManageServerClient
     }
     public enum SVR_OPER
     {
+        [Description("无")]
         None = 0,
         /// <summary>
         /// 激活，监控服务与对应的被监控服务重新建立连接

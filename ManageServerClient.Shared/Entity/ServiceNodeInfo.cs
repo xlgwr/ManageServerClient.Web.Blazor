@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,11 +34,18 @@ namespace ManageServerClient
         /// 端口
         /// </summary>
         [Description("端口")]
-        public string port { get; set; }
+        [Required]
+        [Range(1, 65535, ErrorMessage = "Accommodation invalid (1-65535).")]
+        public int port { get; set; }
         /// <summary>
         /// 描述
         /// </summary>
         [Description("描述")]
         public string desc { get; set; }
+
+        /// <summary>
+        /// 激活,停止,删除
+        /// </summary>
+        public SVR_OPER svrOper { get; set; } = SVR_OPER.None;
     }
 }

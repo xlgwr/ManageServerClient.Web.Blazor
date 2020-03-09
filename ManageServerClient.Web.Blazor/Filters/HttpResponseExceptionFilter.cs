@@ -18,7 +18,10 @@ namespace ManageServerClient.Web.Blazor.Filters
             _logger = logger;
         }
 
-        public void OnActionExecuting(ActionExecutingContext context) { }
+        public void OnActionExecuting(ActionExecutingContext context)
+        {
+           
+        }
 
         public void OnActionExecuted(ActionExecutedContext context)
         {
@@ -32,7 +35,7 @@ namespace ManageServerClient.Web.Blazor.Filters
                         }
                  );
                 context.ExceptionHandled = true;
-                _logger.LogError(context.Exception,"系统错误");
+                _logger.LogError(context.Exception, "系统错误");
             }
         }
     }

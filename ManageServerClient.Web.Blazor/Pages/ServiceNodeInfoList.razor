@@ -29,6 +29,7 @@ else
                 <th>服务ip</th>
                 <th>端口</th>
                 <th>描述</th>
+                <th>状态</th>
                 <th>操作</th>
             </tr>
         </thead>
@@ -42,7 +43,7 @@ else
     </table>
 }
 <ServiceNodeInfoDialog @ref="pModalDialogAdd" curr="currAdd" DialogId="pModalDialogAddId" OnClickCallback="DialogAddBtn" />
-<ServiceNodeInfoDialog @ref="pModalDialogEdit" curr="currItem" DialogId="pModalDialogEditId" OnClickCallback="DialogEditBtn" />
+<ServiceNodeInfoDialog @ref="pModalDialogEdit" curr="currItem" DialogId="pModalDialogEditId" OnClickCallback="DialogOnClickBtn" />
 
 @code {
     [Parameter]
@@ -76,16 +77,11 @@ else
 
         return getResult;
     }
-    public void Remove(ServiceNodeInfo curr)
-    {
-        serviceNodeInfos.Remove(curr);
-        StateHasChanged();
-    }
     public void Change(ServiceNodeInfo curr, toDoEnum toDoEnum)
     {
-        var findcurr = serviceNodeInfos.Where(a => a.identity == curr.identity).FirstOrDefault(); 
-        currItem = findcurr;
-        this.currTodo = toDoEnum; 
+        var findcurr = serviceNodeInfos.Where(a => a.identity == curr.identity).FirstOrDefault();
+        currItem = curr;
+        this.currTodo = toDoEnum;
         StateHasChanged();
     }
     public void onAdd(MouseEventArgs e)
@@ -105,32 +101,49 @@ else
         }
         if (result.errcode == 0)
         {
-            await pNotifier.OnNotify($"新增 ：{newCurr.toJsonStr()} 成功", 1, alertEnum.warning);
+            currAdd = new ServiceNodeInfo();
+            await pNotifier.OnNotify($"新增 ：{newCurr.toJsonStr()} 成功", 1, alertEnum.success);
             jsRuntime.modalJs("pModalDialogAddId", "hide");
         }
         else
         {
-            await pNotifier.OnNotify($"新增 ：{newCurr.toJsonStr()} 失败", 1, alertEnum.warning);
+            await pNotifier.OnNotify($"新增 ：{newCurr.toJsonStr()} 失败", 1, alertEnum.danger);
         }
     }
-    private async Task DialogEditBtn(MouseEventArgs e)
+    private async Task DialogOnClickBtn(MouseEventArgs e)
     {
+        var result = new ResponseObject<ServiceNodeInfo>(); 
+
         switch (currTodo)
         {
-            case toDoEnum.none:
-                break;
-            case toDoEnum.add:
-                break;
             case toDoEnum.edit:
+                result = await _serverApi.TE_SVR_CFG_UPD(new RequestObject<ServiceNodeInfo>() { reqid = ServerEnum.TE_SVR_CFG_UPD, identity = currItem.identity, databody = currItem });
                 break;
             case toDoEnum.del:
+                result = await _serverApi.TE_SVR_OPER(new RequestBase() { reqid = ServerEnum.TE_SVR_OPER, cmd = SVR_OPER.SVR_OPER_DELETE, identity = currItem.identity });
                 break;
             case toDoEnum.live:
+                result = await _serverApi.TE_SVR_OPER(new RequestBase() { reqid = ServerEnum.TE_SVR_OPER, cmd = SVR_OPER.SVR_OPER_ACTIVE, identity = currItem.identity });
+                break;
+            case toDoEnum.stop:
+                result = await _serverApi.TE_SVR_OPER(new RequestBase() { reqid = ServerEnum.TE_SVR_OPER, cmd = SVR_OPER.SVR_OPER_STOP, identity = currItem.identity });
                 break;
             default:
                 break;
         }
-        await pNotifier.OnNotify($"{currTodo.GetDescription()} ：{currItem.toJsonStr()} 成功", 1, alertEnum.success);
+        if (result.errcode == 0)
+        {
+            await pNotifier.OnNotify($"{currTodo.GetDescription()} ：{currItem.toJsonStr()} 成功", 1, alertEnum.success);
+            jsRuntime.modalJs("pModalDialogAddId", "hide");
+        }
+        else
+        {
+            await pNotifier.OnNotify($"{currTodo.GetDescription()} ：{currItem.toJsonStr()} 失败,{result.errinfo}", 1, alertEnum.danger);
+        }
+        //更新
+        await LoadData();
+        StateHasChanged();
+        //关闭当前
         jsRuntime.modalJs("pModalDialogEditId", "hide");
     }
 }

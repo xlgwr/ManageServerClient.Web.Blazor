@@ -18,5 +18,16 @@ namespace System
         {
             jsRuntime.InvokeVoidAsync($"exampleJsFunctions.{funName}", id, options);
         }
+        /// <summary>
+        /// 触发 focus 事件
+        /// </summary>
+        /// <param name="jsRuntime"></param>
+        /// <param name="id"></param>
+        /// <param name="options"></param>
+        /// <param name="funName"></param>
+        public static void onfocusJs(this IJSRuntime jsRuntime, string id, string funName = "onfocusJs")
+        {
+            jsRuntime.InvokeVoidAsync($"exampleJsFunctions.{funName}", id);
+        }
     }
 }

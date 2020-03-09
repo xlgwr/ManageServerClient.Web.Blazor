@@ -13,8 +13,8 @@ namespace ManageServerClient.Web.Blazor.ApiController
     {
         public static List<ServiceNodeInfo> tmpList = new List<ServiceNodeInfo>()
         {
-            new ServiceNodeInfo(){ identity=Guid.NewGuid().ToString(), svrid="1", desc="测试1"},
-            new ServiceNodeInfo(){ identity=Guid.NewGuid().ToString(), svrid="2", desc="测试2"}
+            new ServiceNodeInfo(){ identity=Guid.NewGuid().ToString(), svrid="1", desc="测试1" },
+            new ServiceNodeInfo(){ identity=Guid.NewGuid().ToString(), svrid="2", desc="测试2" }
         };
         // GET: api/ServiceNode
         [HttpGet]
@@ -23,7 +23,7 @@ namespace ManageServerClient.Web.Blazor.ApiController
             var result = new ResponseObject<List<ServiceNodeInfo>>();
             if (requestBase.reqid == ServerEnum.TE_ALL_SVR_QRY)
             {
-                result.databody = tmpList;
+                result.databody = tmpList.OrderBy(a => a.svrid).ToList();
                 return result;
             }
             result.errinfo = "请求服务号错误:" + requestBase.toJsonStr();
@@ -43,8 +43,8 @@ namespace ManageServerClient.Web.Blazor.ApiController
         [HttpPost]
         public ResponseObject<ServiceNodeInfo> TE_SVR_CFG_UPD(RequestObject<ServiceNodeInfo> requestBase)
         {
-            var result = new ResponseObject<ServiceNodeInfo>();
-
+            var result = new ResponseObject<ServiceNodeInfo>()  ;
+             
             if (requestBase.reqid == ServerEnum.TE_SVR_CFG_UPD)
             {
                 var getId = tmpList.Where(a => a.identity == requestBase.identity).FirstOrDefault();
@@ -94,27 +94,16 @@ namespace ManageServerClient.Web.Blazor.ApiController
         public ResponseObject<ServiceNodeInfo> TE_SVR_OPER(RequestBase requestBase)
         {
             var result = new ResponseObject<ServiceNodeInfo>();
-            if (requestBase.reqid == ServerEnum.TE_SVR_DEL)
+            if (requestBase.reqid == ServerEnum.TE_SVR_OPER)
             {
-                switch (requestBase.cmd)
+                var getId = tmpList.Where(a => a.identity == requestBase.identity).FirstOrDefault();
+                if (getId == null)
                 {
-                    case SVR_OPER.None:
-                        break;
-                    case SVR_OPER.SVR_OPER_ACTIVE:
-                        break;
-                    case SVR_OPER.SVR_OPER_STOP:
-                        break;
-                    case SVR_OPER.SVR_OPER_DELETE:
-                        var getId = tmpList.Where(a => a.identity == requestBase.identity).FirstOrDefault();
-                        if (getId != null)
-                        {
-                            tmpList.Remove(getId);
-                        }
-                        break;
-                    default:
-                        break;
+                    result.errinfo = "请求数据不存在:" + requestBase.toJsonStr();
+                    result.errcode = -1;
+                    return result;
                 }
-
+                getId.svrOper = requestBase.cmd;
                 result.errinfo = requestBase.cmd.GetDescription() + "成功";
                 return result;
             }

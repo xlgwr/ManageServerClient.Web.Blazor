@@ -1,5 +1,7 @@
 ﻿@page "/serviceNodeInfoTR"
 @inject NavigationManager NavigationManager
+@inject AutoMapService autoMap
+@inject IJSRuntime jsRuntime
 
 <tr @key="curr.identity">
     @*<td>@curr.identity</td>*@
@@ -8,15 +10,19 @@
     <td>@curr.ip</td>
     <td>@curr.port</td>
     <td>@curr.desc</td>
+    <td>@curr.svrOper.GetDescription()</td>
     <td>
         <ModalDialogButton classBtn="btn btn-info" DialogId="@dialogId" ButtonContent="修改" OnClickCallback="onEdit">
             <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
         </ModalDialogButton>
+        <ModalDialogButton classBtn="btn btn-success" DialogId="@dialogId" ButtonContent="激活" OnClickCallback="onLive">
+            <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+        </ModalDialogButton>
+        <ModalDialogButton classBtn="btn btn-warning" DialogId="@dialogId" ButtonContent="停止" OnClickCallback="onStop">
+            <span class="glyphicon glyphicon-stop" aria-hidden="true"></span>
+        </ModalDialogButton>
         <ModalDialogButton classBtn="btn btn-danger" DialogId="@dialogId" ButtonContent="删除" OnClickCallback="onDel">
             <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
-        </ModalDialogButton>
-        <ModalDialogButton classBtn="btn btn-warning" DialogId="@dialogId" ButtonContent="激活" OnClickCallback="onLive">
-            <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
         </ModalDialogButton>
     </td>
 </tr>
@@ -39,22 +45,33 @@
 
     public void onEdit(MouseEventArgs e)
     {
-        pModalDialog.Changecurr(curr, true);
         pModalDialog.pModalDialog.ChangeDilog("修改", "修改");
-        parentTop.Change(curr, toDoEnum.edit); 
+        var toEdit = autoMap.GetDest<ServiceNodeInfo, ServiceNodeInfo>(curr);
+        pModalDialog.Changecurr(toEdit, true);
+        parentTop.Change(toEdit, toDoEnum.edit); 
     }
+
     public void onDel(MouseEventArgs e)
     {
         pModalDialog.pModalDialog.ChangeDilog("删除", "删除");
-        pModalDialog.Changecurr(curr);
-        parentTop.Change(curr, toDoEnum.del);
-
-
+        var toEdit = autoMap.GetDest<ServiceNodeInfo, ServiceNodeInfo>(curr);
+        pModalDialog.Changecurr(toEdit);
+        parentTop.Change(toEdit, toDoEnum.del);
     }
+
     public void onLive(MouseEventArgs e)
     {
         pModalDialog.pModalDialog.ChangeDilog("激活", "激活");
-        pModalDialog.Changecurr(curr);
-        parentTop.Change(curr, toDoEnum.live);
+        var toEdit = autoMap.GetDest<ServiceNodeInfo, ServiceNodeInfo>(curr);
+        pModalDialog.Changecurr(toEdit);
+        parentTop.Change(toEdit, toDoEnum.live);
+    }
+
+    public void onStop(MouseEventArgs e)
+    {
+        pModalDialog.pModalDialog.ChangeDilog("停止", "停止");
+        var toEdit = autoMap.GetDest<ServiceNodeInfo, ServiceNodeInfo>(curr);
+        pModalDialog.Changecurr(toEdit);
+        parentTop.Change(toEdit, toDoEnum.stop);
     }
 }

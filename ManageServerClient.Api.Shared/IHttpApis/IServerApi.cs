@@ -37,7 +37,7 @@ namespace ManageServerClient
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost("ServiceNode/TE_SVR_CFG_UPD")]
-        ITask<ResponseObject<ServiceNodeInfo>> TE_SVR_CFG_UPD(RequestObject<ServiceNodeInfo> request);
+        ITask<ResponseObject<ServiceNodeInfo>> TE_SVR_CFG_UPD([JsonContent]RequestObject<ServiceNodeInfo> request);
 
         /// <summary>
         /// 新增
@@ -48,12 +48,12 @@ namespace ManageServerClient
         ITask<ResponseObject<ServiceNodeInfo>> TE_SVR_ADD([JsonContent]RequestObject<ServiceNodeInfo> request);
 
         /// <summary>
-        /// 删除
+        /// 4.1.3 激活/停止/删除服务节点
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        [HttpPut("ServiceNode/TE_SVR_OPER")]
-        ITask<ResponseObject<ServiceNodeInfo>> TE_SVR_OPER(RequestBase request);
+        [HttpDelete("ServiceNode/TE_SVR_OPER")]
+        ITask<ResponseObject<ServiceNodeInfo>> TE_SVR_OPER([JsonContent]RequestBase request);
 
 
 

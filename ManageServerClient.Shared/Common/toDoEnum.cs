@@ -24,6 +24,8 @@ namespace ManageServerClient
         [Description("删除")]
         del,
         [Description("激活")]
-        live
+        live,
+        [Description("停止")]
+        stop
     }
 }

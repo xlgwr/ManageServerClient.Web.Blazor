@@ -25,7 +25,6 @@ namespace ManageServerClient
         {
             // do something
             return Task.CompletedTask;
-        }
-
+        } 
     }
 }

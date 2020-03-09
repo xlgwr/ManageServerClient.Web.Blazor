@@ -21,8 +21,10 @@
     public void Changecurr(ServiceNodeInfo getcurr, bool isEdit = false)
     {
         this.disabled = !isEdit;
-        this.curr = getcurr; 
+        this.curr = getcurr;
         StateHasChanged();
+        string idFocus = $"id_{getcurr.identity}";
+        jsRuntime.onfocusJs(idFocus);
     }
     private void DialogIdHide(MouseEventArgs e)
     {
