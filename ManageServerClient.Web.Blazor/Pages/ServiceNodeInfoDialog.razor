@@ -2,10 +2,13 @@
 
 <ModalDialog DialogId="@DialogId" @ref="pModalDialog" OnClickCallback="OnClickCallback">
     <ServiceNodeInfoEdit @key="curr.identity" curr="curr" pdisabled="disabled" />
-</ModalDialog>
-
+    <PNotifier @ref="pNotifier" />
+</ModalDialog> 
 
 @code {
+    [Parameter]
+    public PNotifier pNotifier { get; set; }
+
     [Parameter]
     public bool disabled { get; set; } = false;
     [Parameter]
@@ -22,6 +25,7 @@
     {
         this.disabled = !isEdit;
         this.curr = getcurr;
+        pNotifier.toHide();
         StateHasChanged();
         string idFocus = $"id_{getcurr.identity}";
         jsRuntime.onfocusJs(idFocus);

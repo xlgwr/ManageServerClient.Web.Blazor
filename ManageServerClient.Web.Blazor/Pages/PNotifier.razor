@@ -27,6 +27,11 @@
     {
         _classShow = "hidden";
     }
+    public void toHide()
+    {
+        _classShow = "hidden";
+         StateHasChanged();
+    }
     public async Task OnNotify(string key, int value, alertEnum alertFlag = alertEnum.info)
     {
         await InvokeAsync(() =>

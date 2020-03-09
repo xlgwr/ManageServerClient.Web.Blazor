@@ -94,7 +94,7 @@ namespace ManageServerClient.Web.Blazor
                         {
                             errcode = -1,
                             errinfo = $"参数验证不通过",
-                            databody = ErrorDic
+                            errbody = ErrorDic
                         };
                         return new JsonResult(result);
                     }
@@ -104,7 +104,7 @@ namespace ManageServerClient.Web.Blazor
                         {
                             errcode = -1,
                             errinfo = $"参数验证不通过",
-                            databody = error
+                            errbody = error
                         };
                         return new JsonResult(result);
                     }

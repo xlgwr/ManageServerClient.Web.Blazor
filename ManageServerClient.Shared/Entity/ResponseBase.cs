@@ -19,6 +19,10 @@ namespace ManageServerClient
         /// 错误信息
         /// </summary>
         public string errinfo { get; set; }
+        /// <summary>
+        /// 错误信息其它
+        /// </summary>
+        public object errbody { get; set; }
 
         /// <summary>
         /// http 状态码

@@ -71,7 +71,7 @@ else
         var getResult = await _serverApi.TE_ALL_SVR_QRY(new RequestBase() { reqid = ServerEnum.TE_ALL_SVR_QRY });
         serviceNodeInfos = getResult.databody;
     }
-    public async Task<ResponseBase> Add(ServiceNodeInfo curr)
+    public async Task<ResponseObject<ServiceNodeInfo>> Add(ServiceNodeInfo curr)
     {
         var getResult = await _serverApi.TE_SVR_ADD(new RequestObject<ServiceNodeInfo>() { reqid = ServerEnum.TE_SVR_ADD, databody = curr });
 
@@ -87,6 +87,7 @@ else
     public void onAdd(MouseEventArgs e)
     {
         pModalDialogAdd.pModalDialog.ChangeDilog("新增", "新增");
+        pModalDialogAdd.pNotifier.toHide();
     }
 
     private async Task DialogAddBtn(MouseEventArgs e)
@@ -99,20 +100,19 @@ else
             await LoadData();
             StateHasChanged();
         }
-        if (result.errcode == 0)
+        if (result.errcode != 0)
         {
-            currAdd = new ServiceNodeInfo();
-            await pNotifier.OnNotify($"新增 ：{newCurr.toJsonStr()} 成功", 1, alertEnum.success);
-            jsRuntime.modalJs("pModalDialogAddId", "hide");
+            await pModalDialogAdd.pNotifier.OnNotify($"新增失败：{result.errinfo},{result.errbody.toJsonStr()},Data：{newCurr.toJsonStr()}", 1, alertEnum.danger);
+            return;
         }
-        else
-        {
-            await pNotifier.OnNotify($"新增 ：{newCurr.toJsonStr()} 失败", 1, alertEnum.danger);
-        }
+
+        currAdd = new ServiceNodeInfo();
+        await pNotifier.OnNotify($"新增成功：{newCurr.toJsonStr()}", 1, alertEnum.success);
+        jsRuntime.modalJs("pModalDialogAddId", "hide");
     }
     private async Task DialogOnClickBtn(MouseEventArgs e)
     {
-        var result = new ResponseObject<ServiceNodeInfo>(); 
+        var result = new ResponseObject<ServiceNodeInfo>();
 
         switch (currTodo)
         {
@@ -131,15 +131,13 @@ else
             default:
                 break;
         }
-        if (result.errcode == 0)
+        if (result.errcode != 0)
         {
-            await pNotifier.OnNotify($"{currTodo.GetDescription()} ：{currItem.toJsonStr()} 成功", 1, alertEnum.success);
-            jsRuntime.modalJs("pModalDialogAddId", "hide");
+            await pModalDialogEdit.pNotifier.OnNotify($"{currTodo.GetDescription()}失败：{result.errinfo},{result.errbody.toJsonStr()},Data：{currItem.toJsonStr()}", 1, alertEnum.danger);
+            return;
         }
-        else
-        {
-            await pNotifier.OnNotify($"{currTodo.GetDescription()} ：{currItem.toJsonStr()} 失败,{result.errinfo}", 1, alertEnum.danger);
-        }
+
+        await pNotifier.OnNotify($"{currTodo.GetDescription()}成功：{currItem.toJsonStr()}", 1, alertEnum.success);
         //更新
         await LoadData();
         StateHasChanged();
