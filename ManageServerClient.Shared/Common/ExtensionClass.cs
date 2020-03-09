@@ -867,6 +867,50 @@ namespace ManageServerClient
             }
             return name;
         }
+        /// <summary>
+        /// 获取类属性对应Description
+        /// </summary>
+        /// <param name="em"></param>
+        /// <returns></returns>
+        public static Dictionary<string, string> GetDescriptionAll(this object classObject)
+        {
+            Type type = classObject.GetType();
+            var fds = type.GetProperties();
+            var dicResult = new Dictionary<string, string>();
+            foreach (var fd in fds)
+            {
+                if (fd == null)
+                    continue;
+                object[] attrs = fd.GetCustomAttributes(typeof(DescriptionAttribute), false);
+                string name = string.Empty;
+                foreach (DescriptionAttribute attr in attrs)
+                {
+                    name = attr.Description;
+                }
+                dicResult[fd.Name] = name;
+            }
+            return dicResult;
+        }
+        /// <summary>
+        /// 获取类属性对应Description
+        /// </summary>
+        /// <param name="classObject"></param>
+        /// <param name="fieldName"></param>
+        /// <returns></returns>
+        public static string GetDescriptionAll(this object classObject, string fieldName)
+        {
+            Type type = classObject.GetType();
+            var fd = type.GetProperty(fieldName);
+            if (fd == null)
+                return string.Empty;
+            object[] attrs = fd.GetCustomAttributes(typeof(DescriptionAttribute), false);
+            string name = string.Empty;
+            foreach (DescriptionAttribute attr in attrs)
+            {
+                name = attr.Description;
+            }
+            return name;
+        }
     }
 
     public class ConstantSUtil
@@ -1087,6 +1131,6 @@ namespace ManageServerClient
             utf = System.Text.Encoding.Convert(utf8, gb2312, utf);
             //返回转换后的字符   
             return gb2312.GetString(utf);
-        } 
+        }
     }
 }

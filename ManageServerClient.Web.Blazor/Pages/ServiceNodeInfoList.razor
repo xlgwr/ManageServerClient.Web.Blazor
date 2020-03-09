@@ -133,6 +133,7 @@ else
         }
         if (result.errcode != 0)
         {
+            var getDic = currItem.GetDescriptionAll();
             await pModalDialogEdit.pNotifier.OnNotify($"{currTodo.GetDescription()}失败：{result.errinfo},{result.errbody.toJsonStr()},Data：{currItem.toJsonStr()}", 1, alertEnum.danger);
             return;
         }
