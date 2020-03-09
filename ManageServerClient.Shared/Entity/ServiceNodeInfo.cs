@@ -38,7 +38,7 @@ namespace ManageServerClient
         /// </summary>
         [Description("端口")]
         [Required]
-        [Range(1, 65535, ErrorMessage = "Accommodation invalid (1-65535).")]
+        [Range(0, 65535, ErrorMessage = "Accommodation invalid (0-65535).")]
         public int port { get; set; }
         /// <summary>
         /// 描述
