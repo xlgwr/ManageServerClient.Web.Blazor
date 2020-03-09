@@ -1,8 +1,8 @@
-﻿@page "/serviceNodeInfoList"
-
+﻿
 @inject ILogger<Index> _logger
 @inject IServerApi _serverApi
 @inject AutoMapService autoMap
+@inject IJSRuntime jsRuntime
 
 <h1>
     所有服务节点
@@ -35,24 +35,26 @@ else
         <tbody>
             @foreach (var item in serviceNodeInfos)
             {
-                <ServiceNodeInfoTR @key="curr.identity" curr="item" pNotifier="pNotifier" pModalDialog="pModalDialog" parentTop="this" />
+                <ServiceNodeInfoTR @key="item.identity" curr="item" dialogId="pModalDialogEditId" pNotifier="pNotifier" pModalDialog="pModalDialogEdit" parentTop="this" />
 
             }
         </tbody>
     </table>
 }
-<ServiceNodeInfoDialog @ref="pModalDialog" curr="curr" />
-<ServiceNodeInfoDialog @ref="pModalDialogAdd" curr="currAdd" DialogId="pModalDialogAddId" />
+<ServiceNodeInfoDialog @ref="pModalDialogAdd" curr="currAdd" DialogId="pModalDialogAddId" OnClickCallback="DialogAddBtn" />
+<ServiceNodeInfoDialog @ref="pModalDialogEdit" curr="currItem" DialogId="pModalDialogEditId" OnClickCallback="DialogEditBtn" />
 
 @code {
     [Parameter]
     public PNotifier pNotifier { get; set; }
     [Parameter]
-    public ServiceNodeInfo curr { get; set; } = new ServiceNodeInfo();
+    public toDoEnum currTodo { get; set; } = toDoEnum.none;
+    [Parameter]
+    public ServiceNodeInfo currItem { get; set; } = new ServiceNodeInfo();
     [Parameter]
     public ServiceNodeInfo currAdd { get; set; } = new ServiceNodeInfo();
     [Parameter]
-    public ServiceNodeInfoDialog pModalDialog { get; set; }
+    public ServiceNodeInfoDialog pModalDialogEdit { get; set; }
     [Parameter]
     public ServiceNodeInfoDialog pModalDialogAdd { get; set; }
 
@@ -61,39 +63,74 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        await LoadData();
+    }
+    public async Task LoadData()
+    {
         var getResult = await _serverApi.TE_ALL_SVR_QRY(new RequestBase() { reqid = ServerEnum.TE_ALL_SVR_QRY });
         serviceNodeInfos = getResult.databody;
     }
-    public void Add(ServiceNodeInfo curr)
+    public async Task<ResponseBase> Add(ServiceNodeInfo curr)
     {
-        serviceNodeInfos.Add(curr);
-        currAdd = new ServiceNodeInfo();
-        StateHasChanged();
+        var getResult = await _serverApi.TE_SVR_ADD(new RequestObject<ServiceNodeInfo>() { reqid = ServerEnum.TE_SVR_ADD, databody = curr });
+
+        return getResult;
     }
     public void Remove(ServiceNodeInfo curr)
     {
         serviceNodeInfos.Remove(curr);
         StateHasChanged();
     }
-    public void Change(ServiceNodeInfo curr)
+    public void Change(ServiceNodeInfo curr, toDoEnum toDoEnum)
     {
-        var findcurr = serviceNodeInfos.Where(a => a.identity == curr.identity).FirstOrDefault();
-        if (findcurr != null)
-        {
-            findcurr = curr;
-        }
+        var findcurr = serviceNodeInfos.Where(a => a.identity == curr.identity).FirstOrDefault(); 
+        currItem = findcurr;
+        this.currTodo = toDoEnum; 
         StateHasChanged();
     }
     public void onAdd(MouseEventArgs e)
     {
         pModalDialogAdd.pModalDialog.ChangeDilog("新增", "新增");
-        Func<MouseEventArgs, Task> func = (e) =>
+    }
+
+    private async Task DialogAddBtn(MouseEventArgs e)
+    {
+        var newCurr = autoMap.GetDest<ServiceNodeInfo, ServiceNodeInfo>(currAdd);
+        newCurr.identity = Guid.NewGuid().ToString();
+        var result = await Add(currAdd);
+        if (result.errcode == 0)
         {
-            var newCurr = autoMap.GetDest<ServiceNodeInfo, ServiceNodeInfo>(currAdd);
-            newCurr.identity = Guid.NewGuid().ToString();
-            Add(newCurr);
-            return pNotifier.OnNotify($"新增：{newCurr.toJsonStr()} 成功", 0, alertEnum.warning);
-        };
-        pModalDialogAdd.pModalDialog.SetClickCallbackToDo(func);
+            await LoadData();
+            StateHasChanged();
+        }
+        if (result.errcode == 0)
+        {
+            await pNotifier.OnNotify($"新增 ：{newCurr.toJsonStr()} 成功", 1, alertEnum.warning);
+            jsRuntime.modalJs("pModalDialogAddId", "hide");
+        }
+        else
+        {
+            await pNotifier.OnNotify($"新增 ：{newCurr.toJsonStr()} 失败", 1, alertEnum.warning);
+        }
+    }
+    private async Task DialogEditBtn(MouseEventArgs e)
+    {
+        switch (currTodo)
+        {
+            case toDoEnum.none:
+                break;
+            case toDoEnum.add:
+                break;
+            case toDoEnum.edit:
+                break;
+            case toDoEnum.del:
+                break;
+            case toDoEnum.live:
+                break;
+            default:
+                break;
+        }
+        await pNotifier.OnNotify($"{currTodo.GetDescription()} ：{currItem.toJsonStr()} 成功", 1, alertEnum.success);
+        jsRuntime.modalJs("pModalDialogEditId", "hide");
     }
 }

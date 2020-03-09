@@ -45,7 +45,7 @@ namespace ManageServerClient
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPut("ServiceNode/TE_SVR_ADD")]
-        ITask<ResponseObject<ServiceNodeInfo>> TE_SVR_ADD(RequestObject<ServiceNodeInfo> request);
+        ITask<ResponseObject<ServiceNodeInfo>> TE_SVR_ADD([JsonContent]RequestObject<ServiceNodeInfo> request);
 
         /// <summary>
         /// 删除

@@ -9,18 +9,21 @@
     <td>@curr.port</td>
     <td>@curr.desc</td>
     <td>
-        <ModalDialogButton classBtn="btn btn-info" DialogId="serviceNodeInfos" ButtonContent="修改" OnClickCallback="onEdit">
+        <ModalDialogButton classBtn="btn btn-info" DialogId="@dialogId" ButtonContent="修改" OnClickCallback="onEdit">
             <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
         </ModalDialogButton>
-        <ModalDialogButton classBtn="btn btn-danger" DialogId="serviceNodeInfos" ButtonContent="删除" OnClickCallback="onDel">
+        <ModalDialogButton classBtn="btn btn-danger" DialogId="@dialogId" ButtonContent="删除" OnClickCallback="onDel">
             <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
         </ModalDialogButton>
-        <ModalDialogButton classBtn="btn btn-warning" DialogId="serviceNodeInfos" ButtonContent="激活" OnClickCallback="onLive">
+        <ModalDialogButton classBtn="btn btn-warning" DialogId="@dialogId" ButtonContent="激活" OnClickCallback="onLive">
             <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
         </ModalDialogButton>
     </td>
 </tr>
 @code {
+
+    [Parameter]
+    public string dialogId { get; set; }
 
     [Parameter]
     public ServiceNodeInfoList parentTop { get; set; }
@@ -38,34 +41,20 @@
     {
         pModalDialog.Changecurr(curr, true);
         pModalDialog.pModalDialog.ChangeDilog("修改", "修改");
-        Func<MouseEventArgs, Task> func = (e) =>
-        {
-            parentTop.Change(curr);
-            return pNotifier.OnNotify($"修改 ：{curr.toJsonStr()} 成功", 1, alertEnum.warning);
-        };
-        pModalDialog.pModalDialog.SetClickCallbackToDo(func);
+        parentTop.Change(curr, toDoEnum.edit); 
     }
     public void onDel(MouseEventArgs e)
     {
-        pModalDialog.Changecurr(curr);
         pModalDialog.pModalDialog.ChangeDilog("删除", "删除");
-        Func<MouseEventArgs, Task> func = (e) =>
-        {
-            parentTop.Remove(curr);
-            return pNotifier.OnNotify($"删除 ：{curr.toJsonStr()} 成功", 2, alertEnum.danger);
-        };
-        pModalDialog.pModalDialog.SetClickCallbackToDo(func);
+        pModalDialog.Changecurr(curr);
+        parentTop.Change(curr, toDoEnum.del);
 
 
     }
     public void onLive(MouseEventArgs e)
     {
-        pModalDialog.Changecurr(curr);
         pModalDialog.pModalDialog.ChangeDilog("激活", "激活");
-        Func<MouseEventArgs, Task> func = (e) =>
-        {
-            return pNotifier.OnNotify($"激活 ：{curr.toJsonStr()} 成功", 3, alertEnum.warning);
-        };
-        pModalDialog.pModalDialog.SetClickCallbackToDo(func);
+        pModalDialog.Changecurr(curr);
+        parentTop.Change(curr, toDoEnum.live);
     }
 }

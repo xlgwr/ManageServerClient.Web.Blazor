@@ -1,4 +1,6 @@
-﻿<ModalDialog DialogId="@DialogId" @ref="pModalDialog">
+﻿@inject IJSRuntime jsRuntime
+
+<ModalDialog DialogId="@DialogId" @ref="pModalDialog" OnClickCallback="OnClickCallback">
     <ServiceNodeInfoEdit @key="curr.identity" curr="curr" pdisabled="disabled" />
 </ModalDialog>
 
@@ -13,10 +15,17 @@
     [Parameter]
     public ModalDialog pModalDialog { get; set; }
 
+    [Parameter]
+    public EventCallback<MouseEventArgs> OnClickCallback { get; set; }
+
     public void Changecurr(ServiceNodeInfo getcurr, bool isEdit = false)
     {
         this.disabled = !isEdit;
-        this.curr = getcurr;
+        this.curr = getcurr; 
         StateHasChanged();
+    }
+    private void DialogIdHide(MouseEventArgs e)
+    {
+        jsRuntime.modalJs(DialogId, "hide");
     }
 }

@@ -15,6 +15,6 @@ namespace ManageServerClient
         /// <summary>
         /// 数据实体
         /// </summary>
-        public T databody { get; set; }
+        public T databody { get; set; } = default(T);
     }
 }

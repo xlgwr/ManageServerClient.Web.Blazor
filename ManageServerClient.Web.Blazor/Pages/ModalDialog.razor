@@ -33,21 +33,14 @@
     [Parameter]
     public RenderFragment ChildContent { get; set; }
 
-    public async Task OnClickCallback(MouseEventArgs e)
-    {
-        await _eventCallback.Invoke(e);
-        jsRuntime.modalJs(DialogId, "hide");
-        StateHasChanged();
-    }
+
+    [Parameter]
+    public EventCallback<MouseEventArgs> OnClickCallback { get; set; } 
 
     public void ChangeDilog(string title, string buttonContent)
     {
         this.Title = title;
         this.ButtonContent = buttonContent;
         StateHasChanged();
-    }
-    public void SetClickCallbackToDo(Func<MouseEventArgs, Task> eventCallback)
-    {
-        _eventCallback = eventCallback;
-    }
+    } 
 }

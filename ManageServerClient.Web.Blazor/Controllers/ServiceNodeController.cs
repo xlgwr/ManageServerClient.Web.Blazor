@@ -11,7 +11,7 @@ namespace ManageServerClient.Web.Blazor.ApiController
     [ApiController]
     public class ServiceNodeController : ControllerBase
     {
-        List<ServiceNodeInfo> tmpList = new List<ServiceNodeInfo>()
+        public static List<ServiceNodeInfo> tmpList = new List<ServiceNodeInfo>()
         {
             new ServiceNodeInfo(){ identity=Guid.NewGuid().ToString(), svrid="1", desc="测试1"},
             new ServiceNodeInfo(){ identity=Guid.NewGuid().ToString(), svrid="2", desc="测试2"}
@@ -26,8 +26,8 @@ namespace ManageServerClient.Web.Blazor.ApiController
                 result.databody = tmpList;
                 return result;
             }
-            result.errinfo = "请求服务号错误:"+requestBase.toJsonStr();
-            result.errcode = -1;  
+            result.errinfo = "请求服务号错误:" + requestBase.toJsonStr();
+            result.errcode = -1;
 
             return result;
         }
@@ -71,7 +71,7 @@ namespace ManageServerClient.Web.Blazor.ApiController
         [HttpPut]
         public ResponseObject<ServiceNodeInfo> TE_SVR_ADD(RequestObject<ServiceNodeInfo> requestBase)
         {
-            var result = new ResponseObject<ServiceNodeInfo>();
+            var result = new ResponseObject<ServiceNodeInfo>() { databody = new ServiceNodeInfo() };
 
             var newGuid = Guid.NewGuid().ToString();
             if (requestBase.reqid == ServerEnum.TE_SVR_ADD)
