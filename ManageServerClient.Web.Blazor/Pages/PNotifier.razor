@@ -5,6 +5,17 @@
 <div class="alert @_alertFlag alert-dismissible @_classShow" role="alert">
     <button type="button" class="close" @onclick="onHide" aria-label="Close"><span aria-hidden="true">&times;</span></button>
     <p>提示:@_lastNotification.value:@_lastNotification.key</p>
+    @if (_errorInfos.Any())
+    {
+        <ul>
+            @foreach (var item in _errorInfos)
+            {
+                <li>@item.Name -> @item.Message</li>
+            }
+        </ul>
+    }
+    <ul>
+    </ul>
 </div>
 
 
@@ -19,8 +30,12 @@
     /// </summary>
     public string _alertFlag { get; set; } = "alert-warning";
 
+    [Parameter]
+    public IList<ErrorInfo> _errorInfos { get; set; }
+
     protected override void OnInitialized()
     {
+        _errorInfos = new List<ErrorInfo>();
         Notifier.Notify += OnNotify;
     }
     public void onHide(MouseEventArgs e)
@@ -30,12 +45,13 @@
     public void toHide()
     {
         _classShow = "hidden";
-         StateHasChanged();
+        StateHasChanged();
     }
-    public async Task OnNotify(string key, int value, alertEnum alertFlag = alertEnum.info)
+    public async Task OnNotify(string key, alertEnum alertFlag = alertEnum.info, int value = 1, IList<ErrorInfo> errorInfos = null)
     {
         await InvokeAsync(() =>
         {
+            this._errorInfos = errorInfos == null ? new List<ErrorInfo>() : errorInfos;
             _lastNotification = (key, value);
             _classShow = "show";
             _alertFlag = alertFlag.GetDescription();

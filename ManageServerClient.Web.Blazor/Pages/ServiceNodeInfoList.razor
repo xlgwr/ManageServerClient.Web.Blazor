@@ -112,15 +112,15 @@ else
             if (result.errbody is JArray)
             {
                 JArray dd = result.errbody as JArray;
-                dicErr=dd.ToObject<List<ErrorInfo>>(); 
+                dicErr = dd.ToObject<List<ErrorInfo>>();
             }
 
-            await pModalDialogAdd.pNotifier.OnNotify($"新增失败：{result.errinfo},{dicErr.GetKeyDescFrom(serviceNodeInfoDic).toJsonStr()},Data：{newCurr.toJsonStr()}", 1, alertEnum.danger);
+            await pModalDialogAdd.pNotifier.OnNotify($"新增失败：{result.errinfo}", alertEnum.danger, 1, dicErr.GetKeyDescFrom(serviceNodeInfoDic));
             return;
         }
 
         currAdd = new ServiceNodeInfo();
-        await pNotifier.OnNotify($"新增成功：{newCurr.toJsonStr()}", 1, alertEnum.success);
+        await pNotifier.OnNotify($"新增成功：{newCurr.toJsonStr()}", alertEnum.success);
         jsRuntime.modalJs("pModalDialogAddId", "hide");
     }
     private async Task DialogOnClickBtn(MouseEventArgs e)
@@ -151,14 +151,14 @@ else
             if (result.errbody is JArray)
             {
                 JArray dd = result.errbody as JArray;
-                dicErr=dd.ToObject<List<ErrorInfo>>(); 
+                dicErr = dd.ToObject<List<ErrorInfo>>();
             }
 
-            await pModalDialogEdit.pNotifier.OnNotify($"{currTodo.GetDescription()}失败：{result.errinfo},{dicErr.GetKeyDescFrom(serviceNodeInfoDic).toJsonStr()},Data：{currItem.toJsonStr()}", 1, alertEnum.danger);
+            await pModalDialogEdit.pNotifier.OnNotify($"{currTodo.GetDescription()}失败：{result.errinfo}", alertEnum.danger, 1, dicErr.GetKeyDescFrom(serviceNodeInfoDic));
             return;
         }
 
-        await pNotifier.OnNotify($"{currTodo.GetDescription()}成功：{currItem.toJsonStr()}", 1, alertEnum.success);
+        await pNotifier.OnNotify($"{currTodo.GetDescription()}成功：{currItem.toJsonStr()}", alertEnum.success);
         //更新
         await LoadData();
         StateHasChanged();

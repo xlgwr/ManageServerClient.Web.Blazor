@@ -1,4 +1,4 @@
-﻿ 
+﻿
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,14 +9,14 @@ namespace ManageServerClient.Web.Blazor.Services
     public class NotifierService
     {
         // Can be called from anywhere
-        public async Task Update(string key, int value, alertEnum alert)
+        public async Task Update(string key, alertEnum alert, int value, IList<ErrorInfo> errorInfos)
         {
             if (Notify != null)
             {
-                await Notify.Invoke(key, value, alert);
+                await Notify.Invoke(key, alert, value, errorInfos);
             }
         }
 
-        public event Func<string, int, alertEnum, Task> Notify;
+        public event Func<string, alertEnum, int, IList<ErrorInfo>, Task> Notify;
     }
 }
