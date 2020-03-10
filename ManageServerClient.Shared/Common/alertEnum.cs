@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 
-namespace ManageServerClient
+namespace ManageServerClient.Shared.Common
 {
     /// <summary>
     /// alert-success

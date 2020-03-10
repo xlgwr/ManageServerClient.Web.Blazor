@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ManageServerClient
+namespace ManageServerClient.Shared.Entity
 {
     /// <summary>
     /// 测试   服务信息实体类

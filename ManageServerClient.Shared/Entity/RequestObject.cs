@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ManageServerClient
+namespace ManageServerClient.Shared.Entity
 {
     public class RequestObject<T> : RequestBase
     {

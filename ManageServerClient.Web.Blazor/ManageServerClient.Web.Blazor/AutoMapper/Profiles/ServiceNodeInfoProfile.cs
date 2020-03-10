@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ManageServerClient.Shared.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;

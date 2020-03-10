@@ -1,4 +1,6 @@
 ﻿
+using ManageServerClient.Shared.Common;
+using ManageServerClient.Shared.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;

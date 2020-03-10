@@ -17,6 +17,12 @@ using Microsoft.AspNetCore.Mvc;
 using ManageServerClient.Web.Blazor.Services;
 using AutoMapper;
 using Microsoft.Extensions.Logging;
+using System.Net.WebSockets;
+using Microsoft.AspNetCore.Http;
+using System.Threading;
+using ManageServerClient.Api.Shared.IHttpApis;
+using ManageServerClient.Shared.Entity;
+using ManageServerClient.Web.Blazor.SocketHandlers;
 
 namespace ManageServerClient.Web.Blazor
 {
@@ -53,11 +59,13 @@ namespace ManageServerClient.Web.Blazor
             {
                 cfg.AddMaps(myAssembly);
             });
-            services.AddSingleton(configautoMap);
+            services.AddScoped<ClientWebSocket>();
 
+            services.AddSingleton(configautoMap);
             services.AddSingleton<AutoMapService>();
             services.AddSingleton<WeatherForecastService>();
             services.AddSingleton<NotifierService>();
+
 
             services.AddRazorPages();
             services.AddServerSideBlazor();
@@ -147,7 +155,11 @@ namespace ManageServerClient.Web.Blazor
                 };
             });
 
-            app.UseStaticFiles();
+            app.UseStaticFiles(); 
+
+            #region UseWebSockets 
+            app.Map("/ws", SocketHandler.Map);
+            #endregion 
 
             app.UseRouting();
 
@@ -158,5 +170,6 @@ namespace ManageServerClient.Web.Blazor
                 endpoints.MapFallbackToPage("/_Host");
             });
         }
+
     }
 }

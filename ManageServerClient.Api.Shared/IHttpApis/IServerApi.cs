@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ManageServerClient.Shared.Entity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 using WebApiClient;
 using WebApiClient.Attributes;
 
-namespace ManageServerClient
+namespace ManageServerClient.Api.Shared.IHttpApis
 {
     public interface IServerApi : IHttpApi
     {
@@ -30,6 +31,15 @@ namespace ManageServerClient
         /// <returns></returns>
         [HttpGet("ServiceNode/TE_ALL_SVR_QRY")] 
         ITask<ResponseObject<List<ServiceNodeInfo>>> TE_ALL_SVR_QRY(RequestBase request);
+
+        /// <summary>
+        /// 获取所有服务节点
+        /// </summary>
+        /// <param name="request">请求列表</param>
+        /// <returns></returns>
+        [HttpGet("Home/TE_ALL_SVR_QRY/")]
+        ITask<ResponseObject<List<ServiceNodeInfo>>> TE_ALL_SVR_QRY_1(RequestBase request);
+
 
         /// <summary>
         /// 更新

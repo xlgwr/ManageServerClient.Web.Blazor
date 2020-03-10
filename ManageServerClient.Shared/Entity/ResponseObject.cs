@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ManageServerClient
+namespace ManageServerClient.Shared.Entity
 {
     /// <summary>
     /// 数据响应实体类  生成实体时传入实际的实体

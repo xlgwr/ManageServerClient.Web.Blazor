@@ -1,14 +1,14 @@
-﻿using System;
+﻿using ManageServerClient.Shared.Common;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ManageServerClient
+namespace ManageServerClient.Shared.Entity
 {
-    public class ServiceNodeInfo
+    public class ServiceNodeInfo : EntityBase
     {
         /// <summary>
         /// 服务标识
@@ -18,27 +18,22 @@ namespace ManageServerClient
         /// <summary>
         /// 服务id
         /// </summary>
-        [Description("服务id")]
-        [Required]
+        [Description("服务id")] 
         public string svrid { get; set; }
         /// <summary>
         /// 服务类型
         /// </summary>
-        [Description("服务类型")]
-        [Required]
+        [Description("服务类型")] 
         public int svrtype { get; set; }
         /// <summary>
         /// 服务ip
         /// </summary>
-        [Description("服务ip")]
-        [Required]
+        [Description("服务ip")] 
         public string ip { get; set; }
         /// <summary>
         /// 端口
         /// </summary>
-        [Description("端口")]
-        [Required]
-        [Range(0, 65535, ErrorMessage = "Accommodation invalid (0-65535).")]
+        [Description("端口")] 
         public int port { get; set; }
         /// <summary>
         /// 描述

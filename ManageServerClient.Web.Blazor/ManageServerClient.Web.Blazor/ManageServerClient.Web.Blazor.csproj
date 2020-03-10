@@ -23,9 +23,9 @@
     <PackageReference Include="WebApiClient.JIT" Version="1.1.2" />
   </ItemGroup>
   
-  <ItemGroup>
-    <ProjectReference Include="..\ManageServerClient.Api.Shared\ManageServerClient.Api.Shared.csproj" />
-    <ProjectReference Include="..\ManageServerClient.Shared\ManageServerClient.Shared.csproj" />
+  <ItemGroup> 
+    <ProjectReference Include="..\..\ManageServerClient.Api.Shared\ManageServerClient.Api.Shared.csproj" /> 
+    <ProjectReference Include="..\..\ManageServerClient.Shared\ManageServerClient.Shared.csproj" /> 
     <ProjectReference Include="..\ManageServerClient.Web.Razor\ManageServerClient.Web.Razor.csproj" />
   </ItemGroup>
 

@@ -1,11 +1,13 @@
-﻿using System;
+﻿using ManageServerClient.Api.Shared.IHttpApis;
+using ManageServerClient.Shared.Entity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WebApiClient;
 
-namespace ManageServerClient
+namespace ManageServerClient.Api.Shared.HttpHelper
 {
     /// <summary>
     /// 测试http需要部署相应的服务，否则不通过
@@ -39,11 +41,11 @@ namespace ManageServerClient
         /// <summary>
         /// api配置
         /// </summary>
-        public static void ConfigWebApi()
+        public static void ConfigWebApi(string url)
         {
             HttpApi.Register<IServerApi>().ConfigureHttpApiConfig(c =>
             {
-                c.HttpHost = new Uri("https://localhost:44310/");
+                c.HttpHost = new Uri(url);
                 c.FormatOptions.DateTimeFormat = DateTimeFormats.ISO8601_WithMillisecond;
                // c.GlobalFilters.Add(new ApiTokenFilter());
                 //c.FormatOptions = new FormatOptions() { UseCamelCase = true, DateTimeFormat = DateTimeFormats.ISO8601_WithoutMillisecond, IgnoreNullProperty = true };
@@ -53,7 +55,7 @@ namespace ManageServerClient
         public static ITask<ResponseObject<List<ServiceNodeInfo>>> TE_ALL_SVR_QRY(RequestBase request)
         {
             var api = HttpApi.Resolve<IServerApi>();
-            return api.TE_ALL_SVR_QRY(request);
+            return api.TE_ALL_SVR_QRY_1(request);
         }
 
 

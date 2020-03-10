@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using ManageServerClient.Shared.Entity;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,7 +12,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ManageServerClient
+namespace ManageServerClient.Shared.Common
 {
     public static class ExtensionClass
     {
@@ -867,72 +868,6 @@ namespace ManageServerClient
             }
             return name;
         }
-        /// <summary>
-        /// 获取类属性对应Description
-        /// </summary>
-        /// <param name="em"></param>
-        /// <returns></returns>
-        public static Dictionary<string, string> GetDescriptionAll(this object classObject)
-        {
-            Type type = classObject.GetType();
-            var fds = type.GetProperties();
-            var dicResult = new Dictionary<string, string>();
-            foreach (var fd in fds)
-            {
-                if (fd == null)
-                    continue;
-                object[] attrs = fd.GetCustomAttributes(typeof(DescriptionAttribute), false);
-                string name = string.Empty;
-                foreach (DescriptionAttribute attr in attrs)
-                {
-                    name = attr.Description;
-                }
-                dicResult[fd.Name] = name;
-            }
-            return dicResult;
-        }
-        /// <summary>
-        /// 获取类属性对应Description
-        /// </summary>
-        /// <param name="classObject"></param>
-        /// <param name="fieldName"></param>
-        /// <returns></returns>
-        public static string GetDescriptionAll(this object classObject, string fieldName)
-        {
-            Type type = classObject.GetType();
-            var fd = type.GetProperty(fieldName);
-            if (fd == null)
-                return string.Empty;
-            object[] attrs = fd.GetCustomAttributes(typeof(DescriptionAttribute), false);
-            string name = string.Empty;
-            foreach (DescriptionAttribute attr in attrs)
-            {
-                name = attr.Description;
-            }
-            return name;
-        }
-        public static Dictionary<string, string> GetKeyDescFromDic(this Dictionary<string, string> dic, Dictionary<string, string> sources)
-        {
-            var result = new Dictionary<string, string>();
-            foreach (var item in dic)
-            {
-                var key = $"{item.Key}:{sources.GetValue(item.Key, "")}".Trim(':');
-                result.Add(key, item.Value);
-            }
-            return result;
-        }
-        public static IList<T> GetKeyDescFrom<T>(this IList<T> list, Dictionary<string, string> sources)
-            where T : ErrorInfo
-        {
-            int allCount = list.Count;
-            for (int i = 0; i < allCount; i++)
-            {
-                var item = list[i];
-                var key = $"{item.Name}:{sources.GetValue(item.Name, "")}".Trim(':');
-                item.Name = key;
-            }
-            return list;
-        }
     }
 
     public class ConstantSUtil
@@ -1153,6 +1088,77 @@ namespace ManageServerClient
             utf = System.Text.Encoding.Convert(utf8, gb2312, utf);
             //返回转换后的字符   
             return gb2312.GetString(utf);
+        }
+    }
+
+    public static class GetDescriptionExt
+    {
+
+        /// <summary>
+        /// 获取类属性对应
+        /// </summary>
+        /// <param name="em"></param>
+        /// <returns></returns>
+        public static Dictionary<string, string> GetDescriptionAll(this object classObject)
+        {
+            Type type = classObject.GetType();
+            var fds = type.GetProperties();
+            var dicResult = new Dictionary<string, string>();
+            foreach (var fd in fds)
+            {
+                if (fd == null)
+                    continue;
+                object[] attrs = fd.GetCustomAttributes(typeof(DescriptionAttribute), false);
+                string name = string.Empty;
+                foreach (DescriptionAttribute attr in attrs)
+                {
+                    name = attr.Description;
+                }
+                dicResult[fd.Name] = name;
+            }
+            return dicResult;
+        }
+        /// <summary>
+        /// 获取类属性对应Description
+        /// </summary>
+        /// <param name="classObject"></param>
+        /// <param name="fieldName"></param>
+        /// <returns></returns>
+        public static string GetDescriptionAll(this object classObject, string fieldName)
+        {
+            Type type = classObject.GetType();
+            var fd = type.GetProperty(fieldName);
+            if (fd == null)
+                return string.Empty;
+            object[] attrs = fd.GetCustomAttributes(typeof(DescriptionAttribute), false);
+            string name = string.Empty;
+            foreach (DescriptionAttribute attr in attrs)
+            {
+                name = attr.Description;
+            }
+            return name;
+        }
+        public static Dictionary<string, string> GetKeyDescFromDic(this Dictionary<string, string> dic, Dictionary<string, string> sources)
+        {
+            var result = new Dictionary<string, string>();
+            foreach (var item in dic)
+            {
+                var key = $"{item.Key}:{sources.GetValue(item.Key, "")}".Trim(':');
+                result.Add(key, item.Value);
+            }
+            return result;
+        }
+        public static IList<T> GetKeyDescFrom<T>(this IList<T> list, Dictionary<string, string> sources)
+            where T : ErrorInfo
+        {
+            int allCount = list.Count;
+            for (int i = 0; i < allCount; i++)
+            {
+                var item = list[i];
+                var key = $"{item.Name}:{sources.GetValue(item.Name, "")}".Trim(':');
+                item.Name = key;
+            }
+            return list;
         }
     }
 }

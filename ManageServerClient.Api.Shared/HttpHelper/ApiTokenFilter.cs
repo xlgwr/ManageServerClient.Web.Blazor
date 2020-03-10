@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using WebApiClient;
 using WebApiClient.Contexts;
 
-namespace ManageServerClient
+namespace ManageServerClient.Api.Shared.HttpHelper
 {
     /// <summary>
     /// api token 过滤器

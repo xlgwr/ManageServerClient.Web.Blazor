@@ -1,0 +1,98 @@
+﻿@page "/clientWebSocketDemo"
+
+@inject ClientWebSocket clientWebSocket
+@inject IConfiguration configuration;
+
+<input type="text" @bind="ServiceUrl" />
+<input type="button" @onclick="OnClick" value="连接服务器" />
+
+<input type="text" @bind="SendMsg" />
+<input type="button" @onclick="OnClickSend" value="发送信息" />
+
+@if (wsConnectState == WebSocketState.Connecting)
+{
+    <div>
+        正在与 WebSocket 服务器连线。。。
+    </div>
+}
+else if (wsConnectState == WebSocketState.Open)
+{
+    <div>
+        <ul>
+            @foreach (var item in GetMassages)
+            {
+                <li>@item</li>
+            }
+        </ul>
+    </div>
+}
+
+else
+{
+    <div>
+        WebSocket 服务器连线已断开。。。
+    </div>
+}
+
+@code {
+    
+    [Parameter]
+    public string ServiceUrl { get; set; }
+    [Parameter]
+    public string SendMsg { get; set; }
+
+    private List<string> GetMassages { get; set; }
+
+    private WebSocketState wsConnectState = WebSocketState.None;
+
+    protected override void OnInitialized()
+    {
+        wsConnectState = clientWebSocket.State;
+        ServiceUrl = configuration.GetValue<string>("WebSocketsURL");
+
+    }
+    public async Task OnClick(MouseEventArgs eventArgs)
+    {
+        await initWebSocket();
+    }
+    public async Task OnClickSend(MouseEventArgs eventArgs)
+    { 
+    }
+    public async Task initWebSocket()
+    {
+        //链接Websocket
+        await clientWebSocket.ConnectAsync(new Uri(ServiceUrl), default);
+        wsConnectState = clientWebSocket.State;
+
+        //后台接收消息
+        await ReceiveMessages();
+    }
+
+    public async Task ReceiveMessages()
+    {
+        List<byte> vs = new List<byte>();
+        while (true)
+        {
+            Memory<byte> memory = new Memory<byte>(new byte[1024]);
+            var res = await clientWebSocket.ReceiveAsync(memory, default);
+            var bt = memory.ToArray().Take(res.Count);
+            vs.AddRange(bt);
+            if (res.EndOfMessage)
+            {
+                if (res.MessageType == WebSocketMessageType.Close)
+                {
+                    wsConnectState = clientWebSocket.State;
+
+                }
+                else
+                {
+                    vs.Clear();
+                    var getMessage = Encoding.UTF8.GetString(vs.ToArray(), 0, vs.Count);
+                    GetMassages.Add(getMessage);
+                }
+                //当前方法在后台执行，所以我们需要手动更新UI
+                StateHasChanged();
+            }
+        }
+    }
+}
